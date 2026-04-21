@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
@@ -32,7 +31,7 @@ class PurchaseService {
   static Stream<PurchaseResult> get purchaseStream =>
       _purchaseController.stream;
 
-  /// Initialize IAP and load product details
+  // Initialize IAP and load product details
   static Future<void> init() async {
     try {
       _available = await _iap.isAvailable();
@@ -67,7 +66,7 @@ class PurchaseService {
     }
   }
 
-  /// Handle purchase stream updates
+  // Handle purchase stream updates
   static void _onPurchaseUpdate(List<PurchaseDetails> purchases) {
     for (final purchase in purchases) {
       _handlePurchase(purchase).onError((error, stackTrace) {
@@ -137,7 +136,7 @@ class PurchaseService {
     }
   }
 
-  /// Start purchase flow for pro unlock
+  // Start purchase flow for pro unlock
   static Future<PurchaseResult> purchasePro() async {
     if (!_available) {
       return const PurchaseResult(
@@ -182,7 +181,7 @@ class PurchaseService {
     }
   }
 
-  /// Restore previous purchases
+  // Restore previous purchases
   static Future<PurchaseResult> restorePurchase() async {
     if (!_available) {
       return const PurchaseResult(
