@@ -250,82 +250,85 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
 
           // PDF viewer
           Expanded(
-            child: Stack(
-              children: [
-                SfPdfViewer.file(
-                  File(widget.file.path),
-                  controller: _pdfController,
-                  onDocumentLoaded: (details) {
-                    setState(() {
-                      _isLoading = false;
-                      _totalPages = details.document.pages.count;
-                    });
-                  },
-                  onDocumentLoadFailed: (_) {
-                    setState(() {
-                      _isLoading = false;
-                      _hasError = true;
-                    });
-                  },
-                  onPageChanged: (details) {
-                    setState(() {
-                      _currentPage = details.newPageNumber;
-                      _isBookmarked = context.read<AppProvider>().isBookmarked(
-                        widget.file.id,
-                        page: _currentPage,
-                      );
-                    });
-                  },
-                  enableTextSelection: true,
-                  canShowScrollStatus: true,
-                  canShowPaginationDialog: false,
-                ),
-
-                if (_isLoading)
-                  const Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircularProgressIndicator(color: Colors.white),
-                        SizedBox(height: 16),
-                        Text(
-                          'Loading PDF…',
-                          style: TextStyle(color: Colors.white70),
-                        ),
-                      ],
+            child: SizedBox.expand(
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: SfPdfViewer.file(
+                      File(widget.file.path),
+                      controller: _pdfController,
+                      onDocumentLoaded: (details) {
+                        setState(() {
+                          _isLoading = false;
+                          _totalPages = details.document.pages.count;
+                        });
+                      },
+                      onDocumentLoadFailed: (_) {
+                        setState(() {
+                          _isLoading = false;
+                          _hasError = true;
+                        });
+                      },
+                      onPageChanged: (details) {
+                        setState(() {
+                          _currentPage = details.newPageNumber;
+                          _isBookmarked =
+                              context.read<AppProvider>().isBookmarked(
+                                    widget.file.id,
+                                    page: _currentPage,
+                                  );
+                        });
+                      },
+                      enableTextSelection: true,
+                      canShowScrollStatus: true,
+                      canShowPaginationDialog: false,
                     ),
                   ),
-
-                if (_hasError)
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.error_outline_rounded,
-                          color: Colors.red,
-                          size: 52,
-                        ),
-                        const SizedBox(height: 16),
-                        const Text(
-                          'Failed to load PDF',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        const SizedBox(height: 8),
-                        TextButton(
-                          onPressed: () => setState(() {
-                            _hasError = false;
-                            _isLoading = true;
-                          }),
-                          child: const Text(
-                            'Retry',
+                  if (_isLoading)
+                    const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(color: Colors.white),
+                          SizedBox(height: 16),
+                          Text(
+                            'Loading PDF…',
+                            style: TextStyle(color: Colors.white70),
+                          ),
+                        ],
+                      ),
+                    ),
+                  if (_hasError)
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.error_outline_rounded,
+                            color: Colors.red,
+                            size: 52,
+                          ),
+                          const SizedBox(height: 16),
+                          const Text(
+                            'Failed to load PDF',
                             style: TextStyle(color: Colors.white),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 8),
+                          TextButton(
+                            onPressed: () => setState(() {
+                              _hasError = false;
+                              _isLoading = true;
+                            }),
+                            child: const Text(
+                              'Retry',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
 
