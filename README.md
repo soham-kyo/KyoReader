@@ -1,3 +1,5 @@
+---
+
 # KyoReader – Universal File Reader
 
 A Flutter Android app for reading PDF, images, text, DOCX, and ZIP files.
